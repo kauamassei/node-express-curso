@@ -1,10 +1,23 @@
-import express, { json } from "express";
+import express from "express";
 import { randomUUID } from "node:crypto";
 
 const app = express();
 const port = 3333;
 
 app.use(express.json());
+
+const logMiddleware = (req, res, next) => {
+
+  const date = new Date(); // chamo a funcao data
+
+  const hora = date.toLocaleTimeString("pt-br"); // converto a hora em pt-br
+
+  console.log(`Método: ${req.method} | Rota: ${req.originalUrl} | Hora: ${hora}`);
+
+  next();
+};
+
+app.use(logMiddleware); // chamo o middleware
 
 const produtos = [];
 
@@ -58,7 +71,7 @@ app.get("/produtos/:id", (req, res) => {
   const product = produtos.find((p) => p.productId === id); // pega um unico produto e compara o seu id com o da url
 
   if (!product) {
-    return res.status(404).json({ erro: "Produto não encontrado" }); 
+    return res.status(404).json({ erro: "Produto não encontrado" });
   }
   res.json(product);
 });
