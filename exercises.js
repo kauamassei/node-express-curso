@@ -7,19 +7,20 @@ const port = 3333;
 app.use(express.json());
 
 const logMiddleware = (req, res, next) => {
-
   const date = new Date(); // chamo a funcao data
 
   const hora = date.toLocaleTimeString("pt-br"); // converto a hora em pt-br
 
-  console.log(`Método: ${req.method} | Rota: ${req.originalUrl} | Hora: ${hora}`);
+  console.log(
+    `Método: ${req.method} | Rota: ${req.originalUrl} | Hora: ${hora}`
+  );
 
   next();
 };
 
 app.use(logMiddleware); // chamo o middleware
 
-const produtos = [];
+let produtos = [];
 
 app.get("/", (req, res) => {
   res.send("Olá mundo");
@@ -74,6 +75,19 @@ app.get("/produtos/:id", (req, res) => {
     return res.status(404).json({ erro: "Produto não encontrado" });
   }
   res.json(product);
+});
+
+app.delete("/produtos/:id", (req, res) => {
+  const { id } = req.params.id;
+  const product = produtos.find((p) => p.productId === id);
+
+  if (product === -1) {
+    return res.send("Produto não encontrado");
+  }
+
+  produtos.splice(product, 1); // percorre o array e remove 1 produto
+
+  return res.status(204).send("Produto deletado");
 });
 
 app.listen(port, () => {
