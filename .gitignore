@@ -1,2 +1,4 @@
-node_modulesgit branch -M main
-git push -u origin main
+node_modules
+.env
+
+/generated/prisma

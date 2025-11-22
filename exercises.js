@@ -1,95 +1,95 @@
-import express from "express";
-import { randomUUID } from "node:crypto";
+// import express from "express";
+// import { randomUUID } from "node:crypto";
 
-const app = express();
-const port = 3333;
+// const app = express();
+// const port = 3333;
 
-app.use(express.json());
+// app.use(express.json());
 
-const logMiddleware = (req, res, next) => {
-  const date = new Date(); // chamo a funcao data
+// const logMiddleware = (req, res, next) => {
+//   const date = new Date(); // chamo a funcao data
 
-  const hora = date.toLocaleTimeString("pt-br"); // converto a hora em pt-br
+//   const hora = date.toLocaleTimeString("pt-br"); // converto a hora em pt-br
 
-  console.log(
-    `Método: ${req.method} | Rota: ${req.originalUrl} | Hora: ${hora}`
-  );
+//   console.log(
+//     `Método: ${req.method} | Rota: ${req.originalUrl} | Hora: ${hora}`
+//   );
 
-  next();
-};
+//   next();
+// };
 
-app.use(logMiddleware); // chamo o middleware
+// app.use(logMiddleware); // chamo o middleware
 
-let produtos = [];
+// let produtos = [];
 
-app.get("/", (req, res) => {
-  res.send("Olá mundo");
-});
+// app.get("/", (req, res) => {
+//   res.send("Olá mundo");
+// });
 
-app.get("/status", (req, res) => {
-  res.json({ status: "ok", servidor: "online" });
-});
+// app.get("/status", (req, res) => {
+//   res.json({ status: "ok", servidor: "online" });
+// });
 
-app.get("/users/:nome", (req, res) => {
-  const nome = req.params.nome; //armazenando o parametro na variavel nome
-  res.send(`Olá, ${nome}}`);
-});
+// app.get("/users/:nome", (req, res) => {
+//   const nome = req.params.nome; //armazenando o parametro na variavel nome
+//   res.send(`Olá, ${nome}}`);
+// });
 
-app.get("/soma", (req, res) => {
-  const { a, b } = req.query; // desestruturando as variaveis que vou receber na query
+// app.get("/soma", (req, res) => {
+//   const { a, b } = req.query; // desestruturando as variaveis que vou receber na query
 
-  const numA = Number(a); // convertendo para numero
-  const numB = Number(b);
+//   const numA = Number(a); // convertendo para numero
+//   const numB = Number(b);
 
-  if (isNaN(numA) || isNaN(numB)) {
-    return res.status(400).json({ erro: "Os parâmetros precisam ser números" }); //validacao
-  }
+//   if (isNaN(numA) || isNaN(numB)) {
+//     return res.status(400).json({ erro: "Os parâmetros precisam ser números" }); //validacao
+//   }
 
-  const result = numA + numB;
+//   const result = numA + numB;
 
-  res.status(200).json({ resultado: result });
-});
+//   res.status(200).json({ resultado: result });
+// });
 
-app.post("/produtos", (req, res) => {
-  const { nome, preco } = req.body; // traz os conteúdos e propriedas do 'corpo' da requisicao
-  const productId = randomUUID();
+// app.post("/produtos", (req, res) => {
+//   const { nome, preco } = req.body; // traz os conteúdos e propriedas do 'corpo' da requisicao
+//   const productId = randomUUID();
 
-  if (!productId || !nome || !preco) {
-    return res.status(400).json({ erro: "Envie 'nome' e 'preco'" }); // validacao se há ou não o preco e o nome inseridos
-  }
+//   if (!productId || !nome || !preco) {
+//     return res.status(400).json({ erro: "Envie 'nome' e 'preco'" }); // validacao se há ou não o preco e o nome inseridos
+//   }
 
-  produtos.push({ productId, nome, preco });
+//   produtos.push({ productId, nome, preco });
 
-  res.status(201).json({ mensagem: "Produto criado" });
-});
+//   res.status(201).json({ mensagem: "Produto criado" });
+// });
 
-app.get("/produtos", (req, res) => {
-  res.json(produtos);
-});
+// app.get("/produtos", (req, res) => {
+//   res.json(produtos);
+// });
 
-app.get("/produtos/:id", (req, res) => {
-  const { id } = req.params;
-  const product = produtos.find((p) => p.productId === id); // pega um unico produto e compara o seu id com o da url
+// app.get("/produtos/:id", (req, res) => {
+//   const { id } = req.params;
+//   const product = produtos.find((p) => p.productId === id); // pega um unico produto e compara o seu id com o da url
 
-  if (!product) {
-    return res.status(404).json({ erro: "Produto não encontrado" });
-  }
-  res.json(product);
-});
+//   if (!product) {
+//     return res.status(404).json({ erro: "Produto não encontrado" });
+//   }
+//   res.json(product);
+// });
 
-app.delete("/produtos/:id", (req, res) => {
-  const { id } = req.params.id;
-  const product = produtos.find((p) => p.productId === id);
+// app.delete("/produtos/:id", (req, res) => {
+//   const { id } = req.params.id;
+//   const product = produtos.find((p) => p.productId === id);
 
-  if (product === -1) {
-    return res.send("Produto não encontrado");
-  }
+//   if (product === -1) {
+//     return res.send("Produto não encontrado");
+//   }
 
-  produtos.splice(product, 1); // percorre o array e remove 1 produto
+//   produtos.splice(product, 1); // percorre o array e remove 1 produto
 
-  return res.status(204).send("Produto deletado");
-});
+//   return res.status(204).send("Produto deletado");
+// });
 
-app.listen(port, () => {
-  console.log(`Servidor rodando na porta ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Servidor rodando na porta ${port}`);
+// });
